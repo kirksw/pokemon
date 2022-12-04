@@ -10,6 +10,9 @@ To ingest the raw data ready for processing use the command:
 To process the data into the the form furfilling the requirements use the following command:
 `poetry run python -m pokemon.process`
 
+To start the streamlit dashboard, which operates on the parquet data from the above step.
+`streamlit run pokemon/serve.py`
+
 Additionally there are some test which can be run using `poetry run pytest tests/` (however note that I ran out of time to flesh these out)
 
 
@@ -35,9 +38,9 @@ This module uses pyspark to filter and process the raw json files for each pokem
 
 ### Bonus
 
-- [ ] Create dashboard to allow interactive visualization of data
-- [ ] Document how I would architect a streaming solution
-- [ ] Write description of GDPR approach
+- [x] Create dashboard to allow interactive visualization of data
+- [x] Document how I would architect a continuous updating solution
+- [x] Write description of GDPR approach
 - [x] Implement solution using spark
 
 ## Thought process
@@ -62,3 +65,7 @@ We can also use one-way cryptographic hashing with salting, which within Databri
 To build a system would continuously deliver updates, I would move towards using delta tables for storing the data, such that upserts would be simple to implement using the delta tables library. Delta tables also support change data feed, which allows easy tracking of changes to a delta table in a batch or streaming manner.
 
 The data which is gathered from the API could be delivered via streaming manner (kafka/autoloader/etc), processed continuously or as microbatches, and deliver alerts / updates to the customer as they happen.
+
+### Bonus Requirement 3: Interactive dashboard
+
+Typically I would use PowerBI or make a SPA with vue for dashboarding, however I don't have a personal powerbi license, and a SPA would take too long as I would also have to develop a SPA. Therefore I chose to use streamlit as I had heard a lot about it and wanted to get a quick overview.
